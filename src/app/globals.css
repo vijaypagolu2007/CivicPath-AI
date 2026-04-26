@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff; /* Pure white */
+  --foreground: #0f172a; /* Slate 900 */
+  
+  /* Primary (Vibrant Electric Indigo - High Trust & Premium Tech) */
+  --primary-50: #eef2ff;
+  --primary-100: #e0e7ff;
+  --primary-200: #c7d2fe;
+  --primary-300: #a5b4fc;
+  --primary-400: #818cf8;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5; /* Main Brand Color */
+  --primary-700: #4338ca;
+  --primary-800: #3730a3;
+  --primary-900: #312e81;
+  
+  /* Secondary (Crisp Slate - Extremely clean & readable) */
+  --secondary-50: #f8fafc;
+  --secondary-100: #f1f5f9;
+  --secondary-200: #e2e8f0;
+  --secondary-300: #cbd5e1;
+  --secondary-400: #94a3b8;
+  --secondary-500: #64748b;
+  --secondary-600: #475569;
+  --secondary-700: #334155;
+  --secondary-800: #1e293b;
+  --secondary-900: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+  
+  --font-sans: "Inter", var(--font-geist-sans), sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617; /* Slate 950 */
+    --foreground: #f8fafc; /* Slate 50 */
+    --primary-600: #818cf8; /* Lighter Indigo for Dark Mode crispness */
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Global Focus Styles for Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--primary-500); 
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Assistant Markdown Styling */
+.prose-sm {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.prose-sm p { margin-bottom: 0.75rem; }
+.prose-sm ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 0.75rem; }
+.prose-sm ol { list-style-type: decimal; margin-left: 1.25rem; margin-bottom: 0.75rem; }
+.prose-sm li { margin-bottom: 0.25rem; }
+.prose-sm strong { font-weight: 800; color: inherit; }
+.prose-sm h1, .prose-sm h2, .prose-sm h3 { 
+  font-weight: 900; 
+  margin-top: 1rem; 
+  margin-bottom: 0.5rem; 
+  color: inherit;
+}
+.prose-invert { color: white; }
+.prose-blue ul, .prose-blue ol { color: #2563eb; }
