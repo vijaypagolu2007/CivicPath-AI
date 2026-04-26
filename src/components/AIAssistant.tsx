@@ -21,7 +21,7 @@ const SUGGESTED_QUESTIONS = [
 export const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: "Hi! I'm CivicPath AI. Ask me anything about Indian elections, voter registration, or polling details." }
+    { id: '1', role: 'assistant', content: "Hi! I'm CivicPath AI [V2.5 - 2026 Grounded]. Ask me anything about the **2026 State Elections**, voter registration, or polling protocols. (Current Date: April 2026)." }
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -53,7 +53,11 @@ export const AIAssistant = () => {
       const responseText = data.text || "I couldn't process that.";
       setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: responseText }]);
     } catch (error: any) {
-      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: `Error: ${error.message}` }]);
+      let errorMessage = "Sorry, I'm a bit overwhelmed with requests. Please wait a minute and try again!";
+      if (!error.message.includes("quota")) {
+         errorMessage = `I ran into an issue: ${error.message}`;
+      }
+      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: errorMessage }]);
     } finally {
       setIsTyping(false);
     }

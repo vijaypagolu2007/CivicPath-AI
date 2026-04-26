@@ -9,6 +9,7 @@ import { Certificate } from '@/components/Certificate';
 import { AuthModal } from '@/components/AuthModal';
 import { BoothFinder } from '@/components/BoothFinder';
 import { AIAssistant } from '@/components/AIAssistant';
+import { Toast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
 import { Stepper, Step } from '@/components/ui/Stepper';
 import { ChevronRight, ChevronLeft, GraduationCap, LogIn, LogOut, MapPin, UserPlus, ShieldAlert, Award } from 'lucide-react';
@@ -16,9 +17,10 @@ import { useAuth } from '@/lib/useAuth';
 import { getLocalData, saveLocalData, trackEvent } from '@/lib/store';
 
 export default function Home() {
-  const { user, logout, loading: authLoading } = useAuth();
+  const { user, logout, loading: authLoading, authStatus } = useAuth();
   const [onboarded, setOnboarded] = useState(false);
   const [voterType, setVoterType] = useState<'first' | 'returning' | null>(null);
+  const [toast, setToast] = useState<{ message: string, type: 'welcome' | 'success' } | null>(null);
   
   // Linear Flow: checklist -> ballot -> quiz -> certificate
   const FLOW_STEPS: Step[] = [
@@ -33,13 +35,31 @@ export default function Home() {
   const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
-    // Check if voter type already exists in local/remote session
+    // Handle persistent onboarding state
     const data = getLocalData();
     if (data.voterType) {
       setVoterType(data.voterType);
       setOnboarded(true);
     }
-  }, [user]);
+  }, []);
+
+  // Show welcome toast when user status is determined
+  useEffect(() => {
+    if (user && authStatus) {
+      const message = authStatus === 'returning' 
+        ? `Welcome back, ${user.displayName}! We've restored your progress.` 
+        : `Hello ${user.displayName}! Your progress will now be saved securely.`;
+      
+      console.log(`[Toast] Triggering ${authStatus} welcome for ${user.displayName}`);
+      
+      // Slight delay to allow modal close animation to finish
+      const timer = setTimeout(() => {
+        setToast({ message, type: 'welcome' });
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [user?.uid, authStatus]);
 
   const handleOnboard = async (type: 'first' | 'returning') => {
     setVoterType(type);
@@ -85,6 +105,12 @@ export default function Home() {
     <main className="min-h-screen bg-white text-gray-900 print:bg-white flex flex-col font-sans">
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
       <AIAssistant />
+      <Toast 
+        isVisible={!!toast} 
+        message={toast?.message || ''} 
+        type={toast?.type} 
+        onClose={() => setToast(null)} 
+      />
 
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 print:hidden">

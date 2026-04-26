@@ -41,9 +41,10 @@ export const saveLocalData = (data: Partial<SessionData>) => {
 };
 
 // Sync local data to Firestore (Merging)
-export const syncDataToFirestore = async (uid: string) => {
-  if (!db) return;
+export const syncDataToFirestore = async (uid: string): Promise<{ isReturning: boolean }> => {
+  if (!db) return { isReturning: false };
   const localData = getLocalData();
+  let isReturning = false;
   
   try {
     const userDoc = doc(db, "users", uid);
@@ -52,6 +53,7 @@ export const syncDataToFirestore = async (uid: string) => {
     
     let mergedData = localData;
     if (snap.exists()) {
+      isReturning = true;
       const remoteData = snap.data() as SessionData;
       // Smart Merge: Checklist (Union), Scores (Max)
       mergedData = {
@@ -59,7 +61,6 @@ export const syncDataToFirestore = async (uid: string) => {
         ...localData,
         checklistCompletion: Array.from(new Set([...(remoteData.checklistCompletion || []), ...(localData.checklistCompletion || [])])),
         quizScore: Math.max(remoteData.quizScore || 0, localData.quizScore || 0),
-        // Prefer local voter type if just set, otherwise keep remote
         voterType: localData.voterType || remoteData.voterType
       };
     }
@@ -67,8 +68,10 @@ export const syncDataToFirestore = async (uid: string) => {
     await setDoc(sessionDoc, mergedData, { merge: true });
     saveLocalData(mergedData); // Update local cache with merged results
     console.log("Data synced and merged to Firestore");
+    return { isReturning };
   } catch (error) {
     console.error("Sync failed:", error);
+    return { isReturning: false };
   }
 };
 

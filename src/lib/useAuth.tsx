@@ -13,6 +13,7 @@ import { trackEvent, syncDataToFirestore, cacheUserInfo, getCachedUser } from '.
 interface AuthContextType {
   user: FirebaseUser | null;
   loading: boolean;
+  authStatus: 'new' | 'returning' | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -22,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<FirebaseUser | null>(getCachedUser());
   const [loading, setLoading] = useState(true);
+  const [authStatus, setAuthStatus] = useState<'new' | 'returning' | null>(null);
 
   useEffect(() => {
     if (!auth) {
@@ -32,9 +34,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(u);
       if (u) {
         cacheUserInfo({ uid: u.uid, displayName: u.displayName, photoURL: u.photoURL });
-        await syncDataToFirestore(u.uid);
+        const { isReturning } = await syncDataToFirestore(u.uid);
+        setAuthStatus(isReturning ? 'returning' : 'new');
       } else {
         cacheUserInfo(null);
+        setAuthStatus(null);
       }
       setLoading(false);
     });
@@ -48,10 +52,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const result = await signInWithPopup(auth, googleProvider);
       trackEvent("login_success", { uid: result.user.uid, method: "google" });
     } catch (error: any) {
-      console.error("Login error:", error);
-      if (error.code !== 'auth/popup-closed-by-user') {
-         throw new Error("Sign in failed. Please try again.");
+      if (error.code === 'auth/popup-closed-by-user') {
+        trackEvent("login_cancelled", { method: "google" });
+        return; // Silent return for user cancellation
       }
+      console.error("Login error:", error);
+      throw new Error("Sign in failed. Please try again.");
     }
   };
 
@@ -66,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, authStatus, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
