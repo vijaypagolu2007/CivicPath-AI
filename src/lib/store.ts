@@ -15,7 +15,11 @@ export interface SessionData {
 const LOCAL_STORAGE_KEY = "civic_assistant_session";
 const CACHE_USER_KEY = "civic_assistant_user_cache";
 
-// Helper to track events
+/**
+ * Tracks custom analytics events to Firebase.
+ * @param eventName Name of the event to track.
+ * @param params Additional metadata for the event.
+ */
 export const trackEvent = async (eventName: string, params?: object) => {
   const a = await analytics;
   if (a) {
@@ -40,7 +44,12 @@ export const saveLocalData = (data: Partial<SessionData>) => {
   return updated;
 };
 
-// Sync local data to Firestore (Merging)
+/**
+ * Merges local session data with Firestore remote data.
+ * Uses 'Smart Merge': Max score for quizzes, Union for checklist IDs.
+ * @param uid The authenticated user ID.
+ * @returns Object indicating if this is a returning user.
+ */
 export const syncDataToFirestore = async (uid: string): Promise<{ isReturning: boolean }> => {
   if (!db) return { isReturning: false };
   const localData = getLocalData();

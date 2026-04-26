@@ -1,7 +1,29 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+// Basic In-memory rate limiting to protect Gemini API quota
+const rateLimit = new Map<string, { count: number; lastReset: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_MINUTE = 10;
+
 export async function POST(req: Request) {
+  // Simple IP-based rate limiting
+  const ip = req.headers.get('x-forwarded-for') || 'anonymous';
+  const now = Date.now();
+  const userData = rateLimit.get(ip) || { count: 0, lastReset: now };
+
+  if (now - userData.lastReset > RATE_LIMIT_WINDOW) {
+    userData.count = 0;
+    userData.lastReset = now;
+  }
+
+  if (userData.count >= MAX_REQUESTS_PER_MINUTE) {
+    return NextResponse.json({ error: "Too many requests. Please slow down." }, { status: 429 });
+  }
+
+  userData.count++;
+  rateLimit.set(ip, userData);
+
   try {
     const { messages } = await req.json();
     const apiKey = process.env.GEMINI_API_KEY;
