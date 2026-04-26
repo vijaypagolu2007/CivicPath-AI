@@ -72,6 +72,8 @@ export const AIAssistant = () => {
             animate={{ scale: 1, opacity: 1 }} 
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
+            aria-label="Open AI Assistant"
+            role="button"
             className="fixed bottom-6 right-6 z-50 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center border border-gray-700"
           >
             <MessageSquare size={24} />
@@ -85,6 +87,8 @@ export const AIAssistant = () => {
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
             exit={{ opacity: 0, y: 20 }}
+            role="dialog"
+            aria-labelledby="chat-heading"
             className="fixed bottom-6 right-6 z-50 w-[90vw] sm:w-[400px] h-[600px] max-h-[80vh] flex flex-col bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
           >
             {/* Header */}
@@ -94,12 +98,13 @@ export const AIAssistant = () => {
                   <Bot size={20} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 text-sm">CivicPath AI</h3>
+                  <h3 id="chat-heading" className="font-semibold text-gray-900 text-sm">CivicPath AI</h3>
                   <p className="text-xs text-gray-500">Election Assistant</p>
                 </div>
               </div>
               <button 
                 onClick={() => setIsOpen(false)} 
+                aria-label="Close chat"
                 className="text-gray-400 hover:text-gray-600 transition-colors p-1"
               >
                 <X size={20} />

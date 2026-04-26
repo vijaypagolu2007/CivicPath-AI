@@ -6,8 +6,14 @@ import { AuthProvider } from "@/lib/useAuth";
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "900"] });
 
 export const metadata: Metadata = {
-  title: "CivicPath AI | Election Guide",
-  description: "Interactive civic education assistant for election processes.",
+  title: "CivicPath AI | Your 2026 Election Guide",
+  description: "Secure, AI-powered assistant for the May 2026 State Assembly Elections in West Bengal, Tamil Nadu, Kerala, and Assam. View dates, registration guides, and mock ballots.",
+  keywords: ["Election 2026", "Voter Registration", "India Elections", "CivicPath AI", "Gemini AI"],
+  openGraph: {
+    title: "CivicPath AI | 2026 Election Guide",
+    description: "Get ready for the May 2026 polls with our AI assistant.",
+    type: "website",
+  }
 };
 
 export default function RootLayout({
@@ -16,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.className} text-slate-800 antialiased`} suppressHydrationWarning>
         <AuthProvider>
           {children}
