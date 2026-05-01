@@ -12,7 +12,8 @@ import { AIAssistant } from '@/components/AIAssistant';
 import { Toast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
 import { Stepper, Step } from '@/components/ui/Stepper';
-import { ChevronRight, ChevronLeft, GraduationCap, LogIn, LogOut, MapPin, UserPlus, ShieldAlert, Award } from 'lucide-react';
+import { ChevronRight, ChevronLeft, GraduationCap, LogIn, LogOut, MapPin, UserPlus, Award } from 'lucide-react';
+import Image from 'next/image';
 import { useAuth } from '@/lib/useAuth';
 import { getLocalData, saveLocalData, trackEvent } from '@/lib/store';
 
@@ -38,8 +39,11 @@ export default function Home() {
     // Handle persistent onboarding state
     const data = getLocalData();
     if (data.voterType) {
-      setVoterType(data.voterType);
-      setOnboarded(true);
+      const timer = setTimeout(() => {
+        setVoterType(data.voterType as 'first' | 'returning');
+        setOnboarded(true);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -59,7 +63,7 @@ export default function Home() {
 
       return () => clearTimeout(timer);
     }
-  }, [user?.uid, authStatus]);
+  }, [user, authStatus]);
 
   const handleOnboard = async (type: 'first' | 'returning') => {
     setVoterType(type);
@@ -162,7 +166,7 @@ export default function Home() {
                     <p className="text-[9px] font-medium text-primary-600 uppercase tracking-wide">Progress Saved</p>
                   </div>
                   {user?.photoURL ? (
-                    <img src={user.photoURL} alt="Profile" className="w-10 h-10 rounded-full border-2 border-primary-100" />
+                    <Image src={user.photoURL} alt="Profile" width={40} height={40} className="rounded-full border-2 border-primary-100" />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-secondary-100 text-secondary-900 flex items-center justify-center font-semibold">
                       {user?.displayName?.[0] || 'U'}

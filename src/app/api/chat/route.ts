@@ -54,11 +54,13 @@ NEVER mention 2024 as 'upcoming'. NEVER list April 19-June 1 2024 dates.`
     
     return NextResponse.json({ text: responseText });
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Chat API Error:', error);
-    if (error.message?.includes("API_KEY_INVALID") || error.message?.includes("expired")) {
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+    
+    if (errorMessage.includes("API_KEY_INVALID") || errorMessage.includes("expired")) {
       return NextResponse.json({ error: "The provided API key is expired or invalid. Please check your AI Studio settings." }, { status: 401 });
     }
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

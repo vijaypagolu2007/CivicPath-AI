@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { electionData } from '@/data/india';
-import { Check, X, Award, RotateCcw, ArrowRight, ShieldCheck, Download, Printer } from 'lucide-react';
+import { Check, X, Award, RotateCcw, ArrowRight, ShieldCheck, Printer } from 'lucide-react';
 import { User as FirebaseUser } from 'firebase/auth';
 import { saveSession, loadSession, trackEvent } from '@/lib/store';
 

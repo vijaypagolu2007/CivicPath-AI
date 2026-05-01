@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, useGoogleMap, InfoWindow, Libraries } from '@react-google-maps/api';
-import { MapPin, Navigation, Search, Loader2, Info } from 'lucide-react';
+import { Navigation, Search, Loader2, Info } from 'lucide-react';
 import { useBoothMap, Booth } from '../hooks/useBoothMap';
 
 const containerStyle = {
@@ -18,9 +18,11 @@ const CustomAdvancedMarker = ({ position, onClick, title }: { position: {lat: nu
   
   useEffect(() => {
     if (!map) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let marker: any = null;
     
     google.maps.importLibrary("marker").then((lib) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { AdvancedMarkerElement } = lib as any;
       marker = new AdvancedMarkerElement({
         map,
@@ -36,7 +38,7 @@ const CustomAdvancedMarker = ({ position, onClick, title }: { position: {lat: nu
     return () => {
       if (marker) marker.map = null;
     };
-  }, [map, position.lat, position.lng]);
+  }, [map, position, onClick, title]);
 
   return null;
 };
@@ -167,10 +169,3 @@ export const BoothFinder = () => {
   );
 };
 
-const mapStyles = [
-  { "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] },
-  { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] },
-  { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] },
-  { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] },
-  { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#cbd5e1" }, { "visibility": "on" }] }
-];

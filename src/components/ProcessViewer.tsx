@@ -3,6 +3,7 @@
 import React from 'react';
 import { electionData } from '@/data/india';
 import * as Icons from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 export const ProcessViewer = () => {
   return (
@@ -19,7 +20,7 @@ export const ProcessViewer = () => {
       {/* Grid of Steps */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {electionData.steps.map((step) => {
-          const IconComponent = (Icons as any)[step.icon] || Icons.HelpCircle;
+          const IconComponent = (Icons[step.icon as keyof typeof Icons] as LucideIcon) || Icons.HelpCircle;
           return (
             <div key={step.id} className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all duration-300">
               <div className="flex flex-col gap-4">

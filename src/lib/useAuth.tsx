@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!auth) {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 0);
       return;
     }
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
@@ -51,8 +51,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       trackEvent("login_success", { uid: result.user.uid, method: "google" });
-    } catch (error: any) {
-      if (error.code === 'auth/popup-closed-by-user') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === 'auth/popup-closed-by-user') {
         trackEvent("login_cancelled", { method: "google" });
         return; // Silent return for user cancellation
       }

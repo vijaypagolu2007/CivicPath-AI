@@ -22,7 +22,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     try {
       await login();
       onClose();
-    } catch (err) {
+    } catch {
       setError("Google Login failed.");
     } finally {
       setLoading(false);
@@ -78,6 +78,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                   size="lg"
                   className="w-full gap-3 shadow-sm border-gray-200"
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" className="w-5 h-5" aria-hidden="true" />
                   Continue with Google
                 </Button>

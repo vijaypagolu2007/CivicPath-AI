@@ -28,8 +28,8 @@ export const Certificate = ({ user, onExport }: CertificateProps) => {
         >
           <PartyPopper size={48} className="text-primary-600" />
         </motion.div>
-        <h2 className="text-4xl font-semibold text-secondary-900 tracking-tight">You're Election Ready!</h2>
-        <p className="text-gray-500 mt-2 font-medium">Thank you for preparing to participate in the world's largest democracy.</p>
+        <h2 className="text-4xl font-semibold text-secondary-900 tracking-tight">You&apos;re Election Ready!</h2>
+        <p className="text-gray-500 mt-2 font-medium">Thank you for preparing to participate in the world&apos;s largest democracy.</p>
       </div>
 
       <div id="certificate-node">

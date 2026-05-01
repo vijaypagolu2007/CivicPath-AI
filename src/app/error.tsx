@@ -24,7 +24,7 @@ export default function Error({
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-slate-900">Something went wrong</h1>
           <p className="text-slate-600">
-            We encountered an unexpected error. Don't worry, your data is safe and synced.
+            We encountered an unexpected error. Don&apos;t worry, your data is safe and synced.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 pt-4">

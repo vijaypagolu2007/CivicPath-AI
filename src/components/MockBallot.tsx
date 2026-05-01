@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { electionData, Candidate } from '@/data/india';
 import { Fingerprint, Monitor, Check, RotateCcw, AlertCircle, Volume2, ShieldAlert, XCircle } from 'lucide-react';
 
-import { saveSession, trackEvent } from '@/lib/store';
+import { trackEvent } from '@/lib/store';
 import { Button } from '@/components/ui/Button';
 
 export const MockBallot = () => {
@@ -355,7 +355,7 @@ export const MockBallot = () => {
                     </div>
                     <div className="mt-8 text-center">
                       <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-[10px] font-semibold rounded-full shadow-lg shadow-red-100 animate-pulse uppercase tracking-wide">
-                        Don't Leave Booth (7s)
+                        Don&apos;t Leave Booth (7s)
                       </div>
                     </div>
                   </div>

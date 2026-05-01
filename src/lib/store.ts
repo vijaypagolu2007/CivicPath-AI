@@ -1,4 +1,4 @@
-import { auth, db, analytics } from "./firebase";
+import { db, analytics } from "./firebase";
 import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { logEvent } from "firebase/analytics";
 
@@ -96,7 +96,7 @@ export const loadSession = async (uid?: string): Promise<SessionData> => {
         saveLocalData(remoteData);
         return remoteData;
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Firestore load failed, using local fallback:", error);
     }
   }
@@ -105,7 +105,7 @@ export const loadSession = async (uid?: string): Promise<SessionData> => {
 
 // Save session (handles both local and remote)
 export const saveSession = async (data: Partial<SessionData>, uid?: string) => {
-  const updated = saveLocalData(data);
+  saveLocalData(data);
   if (uid && db) {
     try {
       const userDoc = doc(db, "users", uid);

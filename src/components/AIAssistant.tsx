@@ -52,9 +52,9 @@ export const AIAssistant = () => {
       
       const responseText = data.text || "I couldn't process that.";
       setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: responseText }]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = "Sorry, I'm a bit overwhelmed with requests. Please wait a minute and try again!";
-      if (!error.message.includes("quota")) {
+      if (error instanceof Error && !error.message.includes("quota")) {
          errorMessage = `I ran into an issue: ${error.message}`;
       }
       setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: errorMessage }]);

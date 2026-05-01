@@ -17,6 +17,7 @@ export function useBoothMap(mapRef: React.MutableRefObject<google.maps.Map | nul
     if (!mapRef.current) return;
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { Place } = await google.maps.importLibrary("places") as any;
       
       const request = {
@@ -29,12 +30,12 @@ export function useBoothMap(mapRef: React.MutableRefObject<google.maps.Map | nul
         maxResultCount: 20
       };
 
-      // @ts-ignore
       const { places } = await Place.searchNearby(request);
 
       if (places && places.length > 0) {
         const uniqueLocations = new Map();
         
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         places.forEach((place: any) => {
           const lat = place.location?.lat();
           const lng = place.location?.lng();
@@ -49,6 +50,7 @@ export function useBoothMap(mapRef: React.MutableRefObject<google.maps.Map | nul
 
         const distinctPlaces = Array.from(uniqueLocations.values()).slice(0, 7);
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const foundBooths = distinctPlaces.map((place: any) => ({
           id: place.id || Math.random().toString(),
           name: (place.displayName || 'Polling Station') + ' (Designated Booth)',

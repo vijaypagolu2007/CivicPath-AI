@@ -144,7 +144,7 @@ export const Checklist = ({ voterType, user }: { voterType: 'first' | 'returning
           <div className="bg-white/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-md">
             <CheckCircle2 className="text-white" size={40} />
           </div>
-          <h4 className="text-3xl font-semibold text-white mb-2">You're Fully Prepared!</h4>
+          <h4 className="text-3xl font-semibold text-white mb-2">You&apos;re Fully Prepared!</h4>
           <p className="text-green-50 font-medium">Your voter readiness is at 100%. You are an informed and empowered citizen.</p>
         </motion.div>
       )}

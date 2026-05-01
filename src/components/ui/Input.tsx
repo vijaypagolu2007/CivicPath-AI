@@ -19,7 +19,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               : 'border-gray-200 focus:border-primary-500'
           } ${className}`}
           aria-invalid={error ? 'true' : 'false'}
-          {...(props as any)}
+          {...props}
         />
         {helperText && (
           <p className={`text-xs ${error ? 'text-red-500' : 'text-gray-500'} font-medium`}>
