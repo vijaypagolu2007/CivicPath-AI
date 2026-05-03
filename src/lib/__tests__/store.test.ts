@@ -156,4 +156,33 @@ describe('Store Logic', () => {
       consoleSpy.mockRestore();
     });
   });
+
+  describe('SSR Environment (no window)', () => {
+    const originalWindow = global.window;
+    
+    beforeAll(() => {
+      // @ts-ignore
+      delete global.window;
+    });
+
+    afterAll(() => {
+      global.window = originalWindow;
+    });
+
+    test('getLocalData returns empty when no window', () => {
+      expect(getLocalData()).toEqual({});
+    });
+    
+    test('saveLocalData returns undefined when no window', () => {
+      expect(saveLocalData({})).toBeUndefined();
+    });
+
+    test('cacheUserInfo returns undefined when no window', () => {
+      expect(cacheUserInfo({ uid: '123' } as any)).toBeUndefined();
+    });
+
+    test('getCachedUser returns null when no window', () => {
+      expect(getCachedUser()).toBeNull();
+    });
+  });
 });
